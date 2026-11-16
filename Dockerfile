@@ -10,7 +10,7 @@
 # binary through a platform specific optionalDependency and are rebuilt
 # explicitly.
 # ---------------------------------------------------------------------------
-FROM node:24-alpine@sha256:a34ab6d7f6f4813f4d0c5469d74685604b962fbdbf5793a7bc7b4998ecb867c8 AS deps
+FROM node:24-alpine@sha256:116b800c3754b440ee0aa3ed2f20f5bf3d99a554bfd9adeea09ea8017f6e85f5 AS deps
 WORKDIR /app
 COPY package.json package-lock.json ./
 RUN --mount=type=cache,target=/root/.npm npm ci --no-audit --no-fund --ignore-scripts && \
@@ -22,7 +22,7 @@ RUN --mount=type=cache,target=/root/.npm npm ci --no-audit --no-fund --ignore-sc
 # build that forgets it fails in resolveSiteUrl instead of inlining a wrong
 # origin. CI, docker compose and Coolify all pass it explicitly.
 # ---------------------------------------------------------------------------
-FROM node:24-alpine@sha256:a34ab6d7f6f4813f4d0c5469d74685604b962fbdbf5793a7bc7b4998ecb867c8 AS builder
+FROM node:24-alpine@sha256:116b800c3754b440ee0aa3ed2f20f5bf3d99a554bfd9adeea09ea8017f6e85f5 AS builder
 WORKDIR /app
 ARG NEXT_PUBLIC_SITE_URL
 ARG NEXT_PUBLIC_BUILD_SHA
@@ -43,7 +43,7 @@ RUN NEXT_PUBLIC_BUILD_DATE="${NEXT_PUBLIC_BUILD_DATE:-$(date -u +%Y-%m-%dT%H:%M:
 # Stage 3: runner. Only the standalone server, the static assets and public,
 # run as the image's unprivileged "node" user.
 # ---------------------------------------------------------------------------
-FROM node:24-alpine@sha256:a34ab6d7f6f4813f4d0c5469d74685604b962fbdbf5793a7bc7b4998ecb867c8 AS runner
+FROM node:24-alpine@sha256:116b800c3754b440ee0aa3ed2f20f5bf3d99a554bfd9adeea09ea8017f6e85f5 AS runner
 WORKDIR /app
 ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1
